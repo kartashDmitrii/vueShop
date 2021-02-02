@@ -2,7 +2,8 @@
     <div>
       <nuxt-link to="/">home</nuxt-link>
       <CurrentCurrency/>
-      <Product v-for="(prod, i) in $store.getters.getAllProducts" :product="prod" :key="i"/>
+      <Product v-for="(prod, i) in $store.getters['getAllProducts']" :product="prod" :key="i"/>
+      <p>{{ $store.getters['user/getUser'].username}}</p>
     </div>
 </template>
 

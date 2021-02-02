@@ -4,39 +4,13 @@ export const state = () => ({
     sale: '1'
   },
   products: [
-    {
-      name: 'Prod1',
-      UAHPrice: 50,
-      price: 50,
-    },
-    {
-      name: 'Prod2',
-      UAHPrice: 100,
-      price: 100
-    },
-    {
-      name: 'Prod3',
-      UAHPrice: 150,
-      price: 150,
-    },
-    {
-      name: 'Prod4',
-      UAHPrice: 200,
-      price: 200,
-    },
-    {
-      name: 'Prod5',
-      UAHPrice: 250,
-      price: 250,
-    },
-    {
-      name: 'Prod6',
-      UAHPrice: 300,
-      price: 300,
-    },
+    // {
+    //   name: 'Prod1',
+    //   UAHPrice: 50,
+    //   price: 50,
+    // },
   ],
   selectedProducts: [],
-  userStatus: 'user'
 });
 
 export const getters = {
@@ -69,6 +43,9 @@ export const mutations = {
         elem.price = Math.round(((elem.UAHPrice / newCurrency.sale) + Number.EPSILON) * 100) / 100;
       });
     }
+  },
+  addNewProducts(state, arr){
+    state.products = [...arr]
   },
   changeSelectedProducts(state, elem){
     let elemIndex = state.selectedProducts.findIndex(item => item.name === elem.name);

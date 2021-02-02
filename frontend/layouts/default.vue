@@ -1,5 +1,8 @@
 <template>
   <div>
+    <button style="display: block; margin-bottom: 50px"
+            v-if="$store.getters['user/getUser']"
+            @click="logOut">logout</button>
     <select ref="currencySelect" name="currency" v-model="currency">
       <option value="USD">USD</option>
       <option value="EUR">EUR</option>
@@ -20,9 +23,27 @@
         if (elem.value === this.$store.getters.getCurrency.ccy) elem.selected = true
       });
     },
+    async beforeMount(){
+      try {
+        const data = (await this.$api.product.getAllProducts()).data
+        data.forEach( elem => {
+          elem.UAHPrice = elem.price
+        });
+        this.$store.commit('addNewProducts', data);
+      } catch (e) {
+        console.log(e.response.data)
+      }
+    },
     data(){
       return {
         currency: ''
+      }
+    },
+    methods: {
+      logOut(){
+        this.$store.commit('user/changeJwt', '');
+        this.$store.commit('user/setUser', '');
+        this.$store.commit('user/setUserStatus', '');
       }
     },
     watch: {
