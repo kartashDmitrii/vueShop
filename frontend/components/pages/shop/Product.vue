@@ -3,10 +3,13 @@
       <p class="name">{{product.name}}</p>
       <div class="count">
         <button class="plus" @click="count++">+</button>
-        <p>{{ count }}</p>
+        <p>{{ totalCount }}</p>
         <button class="minus" @click="count <= 0 ? count = 0 : count--">-</button>
       </div>
       <p class="summ"> {{(product.price * count).toFixed(2)}} <span>{{$store.getters.getCurrency.ccy}}</span></p>
+      <button style="margin-left: 50px"
+              v-if="$store.getters['user/getUserStatus'] === 'Authenticated'"
+              @click="$store.dispatch('deleteProduct', product)">Х</button>
     </div>
 </template>
 
@@ -15,15 +18,21 @@
       props: ['product'],
       name: "Product",
       beforeMount() {
-        this.count = this.$store.getters.getSomeSelectedProducts(this.product.name) ? this.$store.getters.getSomeSelectedProducts(this.product.name).count : 0
       },
       data (){
         return {
           count: 0
         }
       },
+      computed: {
+        totalCount(){
+          let count = this.$store.getters.getSomeSelectedProducts(this.product.name) ? this.$store.getters.getSomeSelectedProducts(this.product.name).count : 0
+          this.count = count
+          return count
+        }
+      },
       watch: {
-        count: function(val){
+        totalCount: function(val){
           if (val > 0 ){
             let selectedProduct = {...this.product};
             selectedProduct.count = this.count;

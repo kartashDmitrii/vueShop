@@ -1,0 +1,17 @@
+{
+  "kind": "singleType",
+  "collectionName": "sp_tests",
+  "info": {
+    "name": "SPTest"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "qweqweqweqwe": {
+      "type": "string"
+    }
+  }
+}

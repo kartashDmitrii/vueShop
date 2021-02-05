@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/sp-test",
+      "handler": "sp-test.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/sp-test",
+      "handler": "sp-test.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/sp-test",
+      "handler": "sp-test.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

@@ -9,8 +9,11 @@ export default function (instance) {
     getCount(){
       return instance.get('/products/count')
     },
-    addNewProduct(payload){
-      return instance.post('/products', payload)
+    addNewProduct(payload,access){
+      return instance.post('/products', payload, access)
+    },
+    deleteProduct(id, access){
+      return instance.delete(`/products/${id}`, access)
     }
   }
 }
