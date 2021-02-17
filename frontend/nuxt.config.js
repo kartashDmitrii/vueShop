@@ -18,7 +18,9 @@ export default {
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-    '~/plugins/api.js' 
+    '~/plugins/axios.js',
+    '~/plugins/cookies.js',
+    '~/plugins/mail.js',
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -39,5 +41,17 @@ export default {
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
-  }
+    extend: function (config, ctx) {
+
+      config.node = {
+
+        fs: "empty"
+      };
+      config.module.rules.push({
+        test: /\.html$/i,
+        loader: 'html-loader',
+
+      })
+    },
+  },
 }

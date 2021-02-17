@@ -1,57 +1,49 @@
 {
   "routes": [
     {
-      "method": "POST",
-      "path": "/emails",
-      "handler": "Email.index",
+      "method": "GET",
+      "path": "/categories",
+      "handler": "categories.find",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/orders",
-      "handler": "orders.find",
+      "path": "/categories/count",
+      "handler": "categories.count",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/orders/count",
-      "handler": "orders.count",
-      "config": {
-        "policies": []
-      }
-    },
-    {
-      "method": "GET",
-      "path": "/orders/:id",
-      "handler": "orders.findOne",
+      "path": "/categories/:id",
+      "handler": "categories.findOne",
       "config": {
         "policies": []
       }
     },
     {
       "method": "POST",
-      "path": "/orders",
-      "handler": "orders.create",
+      "path": "/categories",
+      "handler": "categories.create",
       "config": {
         "policies": []
       }
     },
     {
       "method": "PUT",
-      "path": "/orders/:id",
-      "handler": "orders.update",
+      "path": "/categories/:id",
+      "handler": "categories.update",
       "config": {
         "policies": []
       }
     },
     {
       "method": "DELETE",
-      "path": "/orders/:id",
-      "handler": "orders.delete",
+      "path": "/categories/:id",
+      "handler": "categories.delete",
       "config": {
         "policies": []
       }

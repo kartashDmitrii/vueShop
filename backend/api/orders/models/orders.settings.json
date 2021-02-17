@@ -15,10 +15,6 @@
       "type": "string",
       "required": true
     },
-    "price": {
-      "type": "decimal",
-      "required": true
-    },
     "phone": {
       "type": "biginteger",
       "required": true
@@ -28,6 +24,14 @@
       "components": [
         "products.product"
       ]
+    },
+    "price": {
+      "type": "string",
+      "required": true
+    },
+    "address": {
+      "type": "string",
+      "required": true
     }
   }
 }

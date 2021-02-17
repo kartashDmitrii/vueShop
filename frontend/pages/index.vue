@@ -1,12 +1,6 @@
 <template>
   <div>
     <p>index</p>
-    <NuxtLink to="/shop">
-      Shop
-    </NuxtLink>
-    <NuxtLink to="/user-menu">
-      User-Menu
-    </NuxtLink>
     <div>
       <h1 class="title">
         vue-shop

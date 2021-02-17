@@ -1,31 +1,19 @@
 <template>
-  <div>
-    <button style="display: block; margin-bottom: 50px"
-            v-if="$store.getters['user/getUser']"
-            @click="logOut">logout</button>
-    <select ref="currencySelect" name="currency" v-model="currency">
-      <option value="USD">USD</option>
-      <option value="EUR">EUR</option>
-      <option value="UAH">UAH</option>
-    </select>
+  <div id="app">
+    <Header/>
     <Nuxt/>
-    <div class="selected-elems">
-      <div class="elem" v-for="(elem, i) in $store.getters.getAllSelectedProducts" :key="i">{{elem.name}}: {{(elem.count * elem.price).toFixed(2)}}</div>
-    </div>
+    <SmallCart v-show="currRoute !== 'cart'"/>
   </div>
 </template>
 
 <script>
+  import Header from "../components/global/Header";
+  import SmallCart from "../components/global/SmallCart";
   export default {
-    mounted() {
-      this.currency = this.$store.getters.getCurrency.ccy;
-      this.$refs['currencySelect'].querySelectorAll('option').forEach( elem => {
-        if (elem.value === this.$store.getters.getCurrency.ccy) elem.selected = true
-      });
-    },
+    components: {SmallCart, Header},
     async beforeMount(){
       try {
-        const data = (await this.$api.product.getAllProducts()).data
+        const data = (await this.$apiAxios.product.getAllProducts()).data
         data.forEach( elem => {
           elem.UAHPrice = elem.price
         });
@@ -33,22 +21,25 @@
       } catch (e) {
         console.log(e.response.data)
       }
+
+      if(this.$apiCookies.getCookie('user') !== undefined){
+        let data = JSON.parse(this.$apiCookies.getCookie('user'));
+
+        this.$store.commit('user/changeJwt', data.jwt);
+        this.$store.commit('user/setUser', data.user);
+        this.$store.commit('user/setUserStatus', data.user.role.name);
+      }
     },
     data(){
       return {
-        currency: ''
+        currRoute: '',
       }
     },
     methods: {
-      logOut(){
-        this.$store.commit('user/changeJwt', '');
-        this.$store.commit('user/setUser', '');
-        this.$store.commit('user/setUserStatus', '');
-      }
     },
     watch: {
-      currency: function (val) {
-        this.$store.dispatch('getPrivatCurrency', val);
+      $route(to, from){
+        this.currRoute = to.name
       }
     }
   }
@@ -73,41 +64,14 @@ html {
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
 }
-
+body {
+  padding: 0 15px;
+}
 *,
 *::before,
 *::after {
   box-sizing: border-box;
   margin: 0;
-}
-
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
 }
 .selected-elems {
   margin-top: 15px;
@@ -116,4 +80,5 @@ html {
   border-top: 1px solid red;
   width: max-content;
 }
+
 </style>

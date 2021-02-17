@@ -1,0 +1,8 @@
+<p>hello <%= firstName %></p>
+<p>YourProd</p>
+<ul>
+<% prods.forEach(function(prod){ %>
+  <li><%= prod.name %>: <%= prod.count %> = <%= prod.count * prod.price %></li>
+<% }); %>
+</ul>
+<b>TOTAL : <%= total %></b>

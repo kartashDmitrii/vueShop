@@ -3,10 +3,10 @@
       <p class="name">{{product.name}}</p>
       <div class="count">
         <button class="plus" @click="count++">+</button>
-        <p>{{ totalCount }}</p>
-        <button class="minus" @click="count <= 0 ? count = 0 : count--">-</button>
+        <p>{{count}}</p>
+        <button class="minus" @click="count > 0 ? count-- : count = 0">-</button>
       </div>
-      <p class="summ"> {{(product.price * count).toFixed(2)}} <span>{{$store.getters.getCurrency.ccy}}</span></p>
+      <p class="summ"> {{(CurrPrice * count).toFixed(2)}} <span>{{$store.getters.getCurrency.ccy}}</span></p>
       <button style="margin-left: 50px"
               v-if="$store.getters['user/getUserStatus'] === 'Authenticated'"
               @click="$store.dispatch('deleteProduct', product)">Х</button>
@@ -14,10 +14,15 @@
 </template>
 
 <script>
+    import { mapGetters } from "vuex";
     export default {
       props: ['product'],
       name: "Product",
       beforeMount() {
+        let thisElem = this.$store.getters.getSomeSelectedProducts(this.product.name);
+        if(thisElem !== undefined){
+          this.count = thisElem.count
+        }
       },
       data (){
         return {
@@ -25,14 +30,24 @@
         }
       },
       computed: {
-        totalCount(){
-          let count = this.$store.getters.getSomeSelectedProducts(this.product.name) ? this.$store.getters.getSomeSelectedProducts(this.product.name).count : 0
-          this.count = count
-          return count
+        ...mapGetters({
+          selectedProducts: 'getAllSelectedProducts'
+        }),
+        CurrPrice(){
+          return Math.round(((this.product.price / this.$store.getters['getCurrency'].sale) + Number.EPSILON) * 100) / 100;
         }
       },
       watch: {
-        totalCount: function(val){
+        selectedProducts: {
+          deep: true,
+          handler(prods) {
+            let thisElem = prods.find(elem => elem.name === this.product.name)
+            if (thisElem === undefined){
+              this.count = 0;
+            }
+          }
+        },
+        count: function(val){
           if (val > 0 ){
             let selectedProduct = {...this.product};
             selectedProduct.count = this.count;
@@ -51,6 +66,7 @@
 
 <style scoped lang="sass">
   .product
+    margin-left: 10%
     display: flex
     align-items: center
     &>*

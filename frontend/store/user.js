@@ -39,7 +39,8 @@ export const mutations = {
 export const actions = {
   async logIn({commit}, payload){
     try {
-      const data = (await this.$api.auth.signUp(payload)).data;
+      const data = (await this.$apiAxios.auth.signUp(payload)).data;
+      this.$apiCookies.setCookie('user', JSON.stringify(data));
       commit('changeJwt', data.jwt);
       commit('setUser', data.user);
       commit('setUserStatus', data.user.role.name);
@@ -48,6 +49,13 @@ export const actions = {
       setTimeout(()=> {
         commit('setError', '');
       }, 2500)
+    }
+  },
+  async checkout({commit}, payload){
+    try {
+      const data = (await this.$apiAxios.order.checkout(payload)).data;
+    } catch (e) {
+      console.log('error')
     }
   }
 };

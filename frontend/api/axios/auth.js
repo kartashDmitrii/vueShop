@@ -8,8 +8,5 @@ export default function (instance) {
       return instance.post('/auth/local', payload);
       // console.log('signUp');
     },
-    // logout(){
-    //   // return instance.delete('/auth/logout')
-    // },
   }
 }

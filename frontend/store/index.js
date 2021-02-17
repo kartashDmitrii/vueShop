@@ -35,17 +35,13 @@ export const mutations = {
   changeCurrency(state, newCurrency){
     state.currency.ccy = newCurrency.ccy;
     state.currency.sale = newCurrency.sale;
-    state.products.forEach( elem => {
-      elem.price = Math.round(((elem.UAHPrice / newCurrency.sale) + Number.EPSILON) * 100) / 100;
-    });
-    if (state.selectedProducts.length > 0){
-      state.selectedProducts.forEach( elem => {
-        elem.price = Math.round(((elem.UAHPrice / newCurrency.sale) + Number.EPSILON) * 100) / 100;
-      });
-    }
+    this.$apiCookies.setCookie('currency', newCurrency.ccy);
   },
   addNewProducts(state, arr){
     state.products = [...arr]
+  },
+  addNewProduct(state, prod){
+    state.products.push(prod)
   },
   changeSelectedProducts(state, elem){
     let elemIndex = state.selectedProducts.findIndex(item => item.name === elem.name);
@@ -56,8 +52,14 @@ export const mutations = {
   },
   removeFromSelectedProducts(state, elem){
     let elemIndex = state.selectedProducts.findIndex(item => item.name === elem.name);
-    state.selectedProducts.splice(elemIndex, 1)
+    if(elemIndex >=0) {
+      state.selectedProducts.splice(elemIndex, 1)
+    }
   },
+  deleteProduct(state, elem){
+    let elemIndex = state.products.findIndex(item => item.name === elem.name);
+    state.products.splice(elemIndex, 1)
+  }
 };
 
 export const actions = {
@@ -85,6 +87,19 @@ export const actions = {
         sale: '1'
       };
       commit('changeCurrency', newCurrencyValue)
+    }
+  },
+  async deleteProduct({commit, getters}, product) {
+    try {
+      await this.$apiAxios.product.deleteProduct(product.id,{
+        headers: {
+          'Authorization': 'Bearer ' + getters['user/getJwt']
+        }
+      });
+      commit('deleteProduct', product);
+      console.log('delete')
+    } catch (e) {
+      console.log(e.message)
     }
   }
 };
