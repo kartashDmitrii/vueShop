@@ -14,17 +14,16 @@
 <script>
     import Product from "../../components/pages/shop/Product";
     import Filters from "../../components/pages/shop/Filters";
-    import axios from "axios";
     export default {
       name: "category",
       components: {Filters, Product},
-      async beforeRouteEnter(to, from,next){
-        let data = (await axios.categories.getSome(`?name=${params.category}`)).data;
-        console.log(data);
-        next( vm => {
-          vm.currentCategory = data;
-          console.log(vm.currentCategory)
-        })
+      async mounted() {
+          let data = (await this.$apiAxios.categories.getSome(`?name=${this.$route.params.category}`)).data;
+          if (data.length !== 0){
+            this.currentCategory = data[0]
+          } else {
+            this.$nuxt.error({statusCode: 404, message: 'wrongCategoryName'})
+          }
       },
       data () {
         return {
