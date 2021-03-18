@@ -21,9 +21,15 @@
       "required": true
     },
     "categories": {
-      "via": "products",
       "collection": "categories",
+      "via": "products",
       "dominant": true
+    },
+    "property": {
+      "type": "dynamiczone",
+      "components": [
+        "properties.properties"
+      ]
     }
   }
 }

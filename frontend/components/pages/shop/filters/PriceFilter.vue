@@ -1,6 +1,11 @@
 <template>
   <div class="track-container">
-    <span class="range-value min">{{ minValue}} </span> <span class="range-value max">{{ maxValue }}</span>
+    <label>
+      <input class="range-value min" type="number" v-model.lazy="minValue">
+    </label>
+    <label>
+      <input type="number" class="range-value max" v-model.lazy="maxValue">
+    </label>
     <div class="track" ref="_vpcTrack"></div>
     <div class="track-highlight" ref="trackHighlight"></div>
     <button class="track-btn track1" ref="track1"></button>
@@ -25,7 +30,10 @@
           isDragging: false,
           pos: {
             curTrack: null
-          }
+          },
+          lazyTimeout: '',
+          lazy: false,
+          lazyTime: 1000
         }
       },
       methods: {
@@ -51,10 +59,13 @@
             if(value <= (this.minValue + this.step)) return;
             this.maxValue = value;
           }
-
+          this.lazy = false;
+          clearTimeout(this.lazyTimeout);
+          this.lazyTimeout = setTimeout(()=>{
+            this.lazy = true;
+          },this.lazyTime);
           this.$refs[track].style.left = moveInPct + '%';
-          this.setTrackHightlight()
-
+          this.setTrackHightlight();
         },
         mousedown(ev, track){
 
@@ -174,10 +185,24 @@
 
         })
       },
+      watch: {
+        lazy(){
+          if (this.lazy){
+            let payload = {
+              min: this.minValue,
+              max: this.maxValue
+            };
+            this.$emit('change-values', payload);
+          }
+        }
+      }
     }
 </script>
 
 <style scoped>
+  .track-container {
+    margin-top: 50px;
+  }
   .range-value{
     position: absolute;
     top: -2rem;

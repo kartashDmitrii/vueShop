@@ -15,8 +15,8 @@
       "type": "string"
     },
     "products": {
-      "collection": "product",
-      "via": "categories"
+      "via": "categories",
+      "collection": "product"
     },
     "mainCategory": {
       "model": "categories",

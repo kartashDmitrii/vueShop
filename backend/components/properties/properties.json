@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_properties_properties",
+  "info": {
+    "name": "Properties",
+    "icon": "align-justify",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "property": {
+      "model": "properties"
+    },
+    "Value": {
+      "type": "string"
+    }
+  }
+}
